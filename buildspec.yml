@@ -1,0 +1,27 @@
+version: 0.2
+
+env:
+  git-credential-helper: yes
+  parameter-store:
+    build_ssh_key: "/codebuild/private_ssh_key"
+  variables:
+
+phases:
+  install:
+    runtime-versions:
+      golang: latest
+      docker: latest
+    commands:
+  pre_build:
+    commands:
+      - npm install aws-cdk -g
+      - chmod +x setup.sh
+      - chmod +x build.sh
+      - ./setup.sh
+  build:
+    commands:
+      - ./build.sh
+  post_build:
+    commands:
+      - cd deploy
+      - cdk deploy
